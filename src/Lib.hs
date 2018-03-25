@@ -3,16 +3,15 @@ module Lib
     ) where
 
 import Codec.Compression.Zlib
-import qualified Data.ByteString.Char8 as C
 import qualified Data.ByteString.Lazy.Char8 as L
-import Data.ByteString.Base64
+import Data.ByteString.Base64.Lazy
 
 blueprintJson :: [Char] -> Either String [Char]
 blueprintJson = fmap bpDeflate . bpDecode
 
-bpDecode :: [Char] -> Either String C.ByteString
+bpDecode :: [Char] -> Either String L.ByteString
 bpDecode "" = Left "bpDecode: Empty input"
-bpDecode str = decode . C.pack . tail $ str
+bpDecode str = decode . L.pack . tail $ str
 
-bpDeflate :: C.ByteString -> [Char]
-bpDeflate = L.unpack . decompress . L.fromStrict
+bpDeflate :: L.ByteString -> [Char]
+bpDeflate = L.unpack . decompress
