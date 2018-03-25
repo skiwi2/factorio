@@ -8,11 +8,11 @@ import qualified Data.ByteString.Lazy.Char8 as L
 import Data.ByteString.Base64
 
 blueprintJson :: [Char] -> Either String [Char]
-blueprintJson str = fmap bpDeflate (bpDecode str)
+blueprintJson = fmap bpDeflate . bpDecode
 
 bpDecode :: [Char] -> Either String C.ByteString
 bpDecode "" = Left "bpDecode: Empty input"
-bpDecode str = decode (C.pack (tail str))
+bpDecode str = decode . C.pack . tail $ str
 
 bpDeflate :: C.ByteString -> [Char]
-bpDeflate bstr = L.unpack (decompress (L.fromStrict bstr))
+bpDeflate = L.unpack . decompress . L.fromStrict
