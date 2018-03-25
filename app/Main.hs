@@ -6,9 +6,8 @@ import System.Environment
 main :: IO ()
 main = do
     args <- getArgs
-    if null args
-        then putStrLn "Usage: factorio-exe <blueprint-string>"
-        else do
-            case blueprintJson (head args) of
-                Left err    -> putStrLn ("Error: " ++ err)
-                Right json  -> putStrLn json
+    case args of
+        [bpStr] -> case blueprintJson bpStr of
+            Left err    -> putStrLn ("Error: " ++ err)
+            Right json  -> putStrLn json
+        _       -> putStrLn "Usage: factorio-exe <blueprint-string>"
